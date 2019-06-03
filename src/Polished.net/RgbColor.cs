@@ -14,6 +14,7 @@ namespace Polished
         public double? Alpha { get; set; }
 
         private readonly Conversion _conversion = new Conversion();
+        private readonly InternalHelpers _internalHelpers = new InternalHelpers();
 
         /// <summary>
         /// Returns the luminance of a color.
@@ -127,7 +128,7 @@ namespace Polished
             double alpha = Alpha.HasValue ? Alpha.Value : 1;
             return new RgbColor
             {
-                Alpha = InternalHelpers.Guard(0, 1, (alpha * 100 + amount * 100) / 100),
+                Alpha = _internalHelpers.Guard(0, 1, (alpha * 100 + amount * 100) / 100),
                 Red = Red,
                 Green = Green,
                 Blue = Blue
@@ -349,7 +350,7 @@ namespace Polished
             double alpha = Alpha.HasValue ? Alpha.Value : 1;
             return new RgbColor
             {
-                Alpha = InternalHelpers.Guard(0, 1, (alpha * 100 - amount * 100) / 100),
+                Alpha = _internalHelpers.Guard(0, 1, (alpha * 100 - amount * 100) / 100),
                 Red = Red,
                 Green = Green,
                 Blue = Blue

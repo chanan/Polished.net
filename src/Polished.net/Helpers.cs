@@ -2,9 +2,9 @@
 
 namespace Polished
 {
-    public static class Helpers
+    public class Helpers : IHelpers
     {
-        private static readonly string[] positionMap = new string[] { "top", "right", "bottom", "left" };
+        private readonly string[] positionMap = new string[] { "top", "right", "bottom", "left" };
 
         /// <summary>
         ///  Enables shorthand for direction-based properties. It accepts a property and up to four values that map to top, right, bottom, and left, respectively. 
@@ -14,7 +14,7 @@ namespace Polished
         /// <param name="property"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string DirectionalProperty(string property, params string[] args)
+        public string DirectionalProperty(string property, params string[] args)
         {
             string[] valuesWithDefaults = new string[]
             {
@@ -27,7 +27,7 @@ namespace Polished
             return GenerateStyles(property, valuesWithDefaults);
         }
 
-        private static string GenerateStyles(string property, params string[] valuesWithDefaults)
+        private string GenerateStyles(string property, params string[] valuesWithDefaults)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < valuesWithDefaults.Length; i += 1)
@@ -40,7 +40,7 @@ namespace Polished
             return sb.ToString();
         }
 
-        private static string GenerateProperty(string property, string position)
+        private string GenerateProperty(string property, string position)
         {
             if (string.IsNullOrWhiteSpace(property))
             {

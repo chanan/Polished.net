@@ -7,17 +7,17 @@ namespace Polished.Internal
 {
     internal class InternalHelpers
     {
-        public static int Guard(int lowerBoundary, int upperBoundary, int value)
+        public int Guard(int lowerBoundary, int upperBoundary, int value)
         {
             return Math.Max(lowerBoundary, Math.Min(upperBoundary, value));
         }
 
-        public static double Guard(double lowerBoundary, double upperBoundary, double value)
+        public double Guard(double lowerBoundary, double upperBoundary, double value)
         {
             return Math.Max(lowerBoundary, Math.Min(upperBoundary, value));
         }
 
-        public static string StatefulSelectors(List<string> states, Func<string, string> template, List<string> stateMap)
+        public string StatefulSelectors(List<string> states, Func<string, string> template, List<string> stateMap)
         {
             if (template == null)
             {
@@ -42,7 +42,7 @@ namespace Polished.Internal
             return ret.StripWhitespace();
         }
 
-        private static string GenerateSelectors(Func<string, string> template, string state)
+        private string GenerateSelectors(Func<string, string> template, string state)
         {
             string arg = state != null ? state : "";
             return template(arg);

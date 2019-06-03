@@ -5,15 +5,18 @@ using System.Linq;
 
 namespace Polished
 {
-    public class Shorthand
+    public class Shorthand : IShorthand
     {
+        private readonly IHelpers _helpers = new Helpers();
+        private readonly InternalHelpers _internalHelpers = new InternalHelpers();
+
         /// <summary>
         /// Shorthand for easily setting the animation property. Allows either multiple arrays with animations
         /// or a single animation spread over the arguments.
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string Animation(params string[] args)
+        public string Animation(params string[] args)
         {
             if (args.Count() > 8)
             {
@@ -29,7 +32,7 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string Animation(params string[][] args)
+        public string Animation(params string[][] args)
         {
             if (args.Max(arg => arg.Count()) > 8)
             {
@@ -45,7 +48,7 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string BackgroundImages(params string[] args)
+        public string BackgroundImages(params string[] args)
         {
             return "background-image: " + string.Join(", ", args) + ";";
         }
@@ -55,7 +58,7 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string Backgrounds(params string[] args)
+        public string Backgrounds(params string[] args)
         {
             return "background: " + string.Join(", ", args) + ";";
         }
@@ -67,7 +70,7 @@ namespace Polished
         /// <param name="borderSide"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string Border(Side borderSide, params string[] args)
+        public string Border(Side borderSide, params string[] args)
         {
             string side = borderSide.ToString().ToLower();
             return $"border-{side}-width:{args[0]};border-{side}-style:{args[1]};border-{side}-color:{args[2]};";
@@ -80,7 +83,7 @@ namespace Polished
         /// <param name="param"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string Border(string param, params string[] args)
+        public string Border(string param, params string[] args)
         {
             string[] names = Enum.GetNames(typeof(Side));
             if (Array.Exists(names, name => name == param.FirstCharToUpper()))
@@ -99,7 +102,7 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string Border(params string[] args)
+        public string Border(params string[] args)
         {
             string[] names = Enum.GetNames(typeof(Side));
             if (Array.Exists(names, name => name == args[0].FirstCharToUpper()))
@@ -115,9 +118,9 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string BorderColor(params string[] args)
+        public string BorderColor(params string[] args)
         {
-            return Helpers.DirectionalProperty("border-color", args);
+            return _helpers.DirectionalProperty("border-color", args);
         }
 
         /// <summary>
@@ -126,7 +129,7 @@ namespace Polished
         /// <param name="side"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        public static string BorderRadius(Side side, string radius)
+        public string BorderRadius(Side side, string radius)
         {
             string strSide = side.ToString().ToLower();
             if (side == Side.Top || side == Side.Bottom)
@@ -144,7 +147,7 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string BorderRadius(string side, string radius)
+        public string BorderRadius(string side, string radius)
         {
             Side SideEnum = (Side)Enum.Parse(typeof(Side), side.FirstCharToUpper());
             return BorderRadius(SideEnum, radius);
@@ -155,9 +158,9 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string BorderStyle(params string[] args)
+        public string BorderStyle(params string[] args)
         {
-            return Helpers.DirectionalProperty("border-style", args);
+            return _helpers.DirectionalProperty("border-style", args);
         }
 
         /// <summary>
@@ -165,9 +168,9 @@ namespace Polished
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string BorderWidth(params string[] args)
+        public string BorderWidth(params string[] args)
         {
-            return Helpers.DirectionalProperty("border-width", args);
+            return _helpers.DirectionalProperty("border-width", args);
         }
 
         /// <summary>
@@ -175,46 +178,36 @@ namespace Polished
         /// </summary>
         /// <param name="states"></param>
         /// <returns></returns>
-        public static string Buttons(params InteractionState[] states)
+        public string Buttons(params InteractionState[] states)
         {
             List<string> list = EnumListToStringList(states.Select(state => state.ToString()).ToList());
-            var stateMap = EnumListToStringList(Enum.GetNames(typeof(InteractionState)).ToList());
-            return InternalHelpers.StatefulSelectors(list, ButtonTemplate, stateMap);
+            List<string> stateMap = EnumListToStringList(Enum.GetNames(typeof(InteractionState)).ToList());
+            return _internalHelpers.StatefulSelectors(list, ButtonTemplate, stateMap);
         }
 
-        private static List<string> EnumListToStringList(List<string> input)
+        private List<string> EnumListToStringList(List<string> input)
         {
-            var ret = new List<string>();
-            foreach(var str in input)
+            List<string> ret = new List<string>();
+            foreach (string str in input)
             {
-                if (str == "Base") ret.Add(null);
-                else ret.Add(':' + str.ToLower());
+                if (str == "Base")
+                {
+                    ret.Add(null);
+                }
+                else
+                {
+                    ret.Add(':' + str.ToLower());
+                }
             }
             return ret;
         }
 
-        private static string ButtonTemplate(string state)
+        private string ButtonTemplate(string state)
         {
             return $@"button{state},
                 input[type=""button""]{state},
                 input[type=""reset""]{state},
                 input[type=""submit""]{state}";
-        }
-
-        public enum Side
-        {
-            Top,
-            Right,
-            Bottom,
-            Left
-        }
-
-        public enum InteractionState
-        {
-            Base,
-            Active,
-            Focus,
-            Hover
         }
     }
 }

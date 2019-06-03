@@ -5,10 +5,12 @@ namespace Polished.Tests.Shorthand
     [TestClass]
     public class Animation
     {
+        private readonly IShorthand _shorthand = new Polished.Shorthand();
+
         [TestMethod]
         public void Use8Args()
         {
-            string actual = Polished.Shorthand.Animation("rotate", "1s", "ease-in-out", "0.5s", "5", "reverse", "forwards", "paused");
+            string actual = _shorthand.Animation("rotate", "1s", "ease-in-out", "0.5s", "5", "reverse", "forwards", "paused");
             string expected = "animation: rotate, 1s, ease-in-out, 0.5s, 5, reverse, forwards, paused;";
             Assert.AreEqual(expected, actual);
         }
@@ -16,7 +18,7 @@ namespace Polished.Tests.Shorthand
         [TestMethod]
         public void LessThan8Args()
         {
-            string actual = Polished.Shorthand.Animation("rotate", "1s", "ease-in-out");
+            string actual = _shorthand.Animation("rotate", "1s", "ease-in-out");
             string expected = "animation: rotate, 1s, ease-in-out;";
             Assert.AreEqual(expected, actual);
         }
@@ -24,7 +26,7 @@ namespace Polished.Tests.Shorthand
         [TestMethod]
         public void MulitModeUse8Args()
         {
-            string actual = Polished.Shorthand.Animation(new string[][] { new string[] { "rotate", "1s", "ease-in-out", "0.5s", "5", "reverse", "forwards", "paused" } });
+            string actual = _shorthand.Animation(new string[][] { new string[] { "rotate", "1s", "ease-in-out", "0.5s", "5", "reverse", "forwards", "paused" } });
             string expected = "animation: rotate 1s ease-in-out 0.5s 5 reverse forwards paused;";
             Assert.AreEqual(expected, actual);
         }
@@ -32,7 +34,7 @@ namespace Polished.Tests.Shorthand
         [TestMethod]
         public void MulitModeLessThan8Args()
         {
-            string actual = Polished.Shorthand.Animation(new string[][] { new string[] { "rotate", "1s", "ease-in-out" } });
+            string actual = _shorthand.Animation(new string[][] { new string[] { "rotate", "1s", "ease-in-out" } });
             string expected = "animation: rotate 1s ease-in-out;";
             Assert.AreEqual(expected, actual);
         }
@@ -40,7 +42,7 @@ namespace Polished.Tests.Shorthand
         [TestMethod]
         public void MulitModeTwoAnimations()
         {
-            string actual = Polished.Shorthand.Animation(new string[][] { new string[] { "rotate", "1s", "ease-in-out" }, new string[] { "colorchange", "2s" } });
+            string actual = _shorthand.Animation(new string[][] { new string[] { "rotate", "1s", "ease-in-out" }, new string[] { "colorchange", "2s" } });
             string expected = "animation: rotate 1s ease-in-out, colorchange 2s;";
             Assert.AreEqual(expected, actual);
         }
@@ -49,7 +51,7 @@ namespace Polished.Tests.Shorthand
         public void ThrowsIfMoreThan8Args()
         {
             Assert.ThrowsException<PolishedException>(
-                () => Polished.Shorthand.Animation("one", "two", "three", "four", "five", "six", "seven", "eight", "oops")
+                () => _shorthand.Animation("one", "two", "three", "four", "five", "six", "seven", "eight", "oops")
             );
         }
 
@@ -57,7 +59,7 @@ namespace Polished.Tests.Shorthand
         public void MulitModeThrowsIfMoreThan8Args()
         {
             Assert.ThrowsException<PolishedException>(
-                () => Polished.Shorthand.Animation(new string[][] {
+                () => _shorthand.Animation(new string[][] {
                     new string[] { "rotate" },
                     new string[] { "one", "two", "three", "four", "five", "six", "seven", "eight", "oops" }
                 }

@@ -11,6 +11,7 @@ namespace Polished
         public double? Alpha { get; set; }
 
         private readonly Conversion _conversion = new Conversion();
+        private readonly InternalHelpers _internalHelpers = new InternalHelpers();
 
         /// <summary>
         /// Changes the hue of the color. Hue is a number between 0 to 360. The first
@@ -56,7 +57,7 @@ namespace Polished
             {
                 Alpha = Alpha,
                 Hue = Hue,
-                Lightness = InternalHelpers.Guard(0d, 1d, Lightness - amount),
+                Lightness = _internalHelpers.Guard(0d, 1d, Lightness - amount),
                 Saturation = Saturation
             };
         }
@@ -75,7 +76,7 @@ namespace Polished
                 Alpha = Alpha,
                 Hue = Hue,
                 Lightness = Lightness,
-                Saturation = InternalHelpers.Guard(0d, 1d, Saturation - amount)
+                Saturation = _internalHelpers.Guard(0d, 1d, Saturation - amount)
             };
         }
 
@@ -105,7 +106,7 @@ namespace Polished
             {
                 Alpha = Alpha,
                 Hue = Hue,
-                Lightness = InternalHelpers.Guard(0d, 1d, Lightness + amount),
+                Lightness = _internalHelpers.Guard(0d, 1d, Lightness + amount),
                 Saturation = Saturation
             };
         }
@@ -134,7 +135,7 @@ namespace Polished
                 Alpha = Alpha,
                 Hue = Hue,
                 Lightness = Lightness,
-                Saturation = InternalHelpers.Guard(0d, 1d, Saturation + amount)
+                Saturation = _internalHelpers.Guard(0d, 1d, Saturation + amount)
             };
         }
 
