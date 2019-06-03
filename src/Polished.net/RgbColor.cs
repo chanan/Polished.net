@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 
-namespace Polished.Types
+namespace Polished
 {
     public class RgbColor
     {
@@ -13,7 +13,7 @@ namespace Polished.Types
         public int Blue { get; set; }
         public double? Alpha { get; set; }
 
-        private Conversion _conversion = new Conversion();
+        private readonly Conversion _conversion = new Conversion();
 
         /// <summary>
         /// Returns the luminance of a color.
@@ -21,7 +21,7 @@ namespace Polished.Types
         /// <returns></returns>
         public double GetLuminance()
         {
-            var ret = 0.2126 * GetModifier(Red) + 0.7152 * GetModifier(Green) + 0.0722 * GetModifier(Blue);
+            double ret = 0.2126 * GetModifier(Red) + 0.7152 * GetModifier(Green) + 0.0722 * GetModifier(Blue);
             return Math.Round(ret, 3);
         }
 
@@ -33,9 +33,9 @@ namespace Polished.Types
         /// <returns></returns>
         public double GetContrast(RgbColor rgbColor)
         {
-            var luminance1 = GetLuminance();
-            var luminance2 = rgbColor.GetLuminance();
-            var ret = luminance1 > luminance2 ?
+            double luminance1 = GetLuminance();
+            double luminance2 = rgbColor.GetLuminance();
+            double ret = luminance1 > luminance2 ?
                 (luminance1 + 0.05) / (luminance2 + 0.05) :
                 (luminance2 + 0.05) / (luminance1 + 0.05);
             return Math.Round(ret, 2);
@@ -45,13 +45,16 @@ namespace Polished.Types
         /// Inverts the red, green and blue values of a color.
         /// </summary>
         /// <returns></returns>
-        public RgbColor Invert() => new RgbColor
+        public RgbColor Invert()
         {
-            Red = 255 - Red,
-            Green = 255 - Green,
-            Blue = 255 - Blue,
-            Alpha = Alpha
-        };
+            return new RgbColor
+            {
+                Red = 255 - Red,
+                Green = 255 - Green,
+                Blue = 255 - Blue,
+                Alpha = Alpha
+            };
+        }
 
         /// <summary>
         /// Determines which contrast guidelines have been met for two colors.
@@ -61,7 +64,7 @@ namespace Polished.Types
         /// <returns></returns>
         public ContrastScore MeetsContrastGuidelines(RgbColor rgbColor)
         {
-            var contrastRatio = GetContrast(rgbColor);
+            double contrastRatio = GetContrast(rgbColor);
             return new ContrastScore
             {
                 AA = contrastRatio >= 4.5,
@@ -97,13 +100,13 @@ namespace Polished.Types
 
             // The formular is copied from the original Sass implementation:
             // http://sass-lang.com/documentation/Sass/Script/Functions.html#mix-instance_method
-            var alphaDelta = color1.Alpha.Value - color2.Alpha.Value;
-            var x = weight * 2 - 1;
-            var y = x * alphaDelta == -1 ? x : x + alphaDelta;
-            var z = 1 + x * alphaDelta;
-            var weight1 = (y / z + 1) / 2;
-            var weight2 = 1 - weight1;
-            var mixedColor = new RgbColor
+            double alphaDelta = color1.Alpha.Value - color2.Alpha.Value;
+            double x = weight * 2 - 1;
+            double y = x * alphaDelta == -1 ? x : x + alphaDelta;
+            double z = 1 + x * alphaDelta;
+            double weight1 = (y / z + 1) / 2;
+            double weight2 = 1 - weight1;
+            RgbColor mixedColor = new RgbColor
             {
                 Red = (int)Math.Floor(color1.Red * weight1 + color2.Red * weight2),
                 Green = (int)Math.Floor(color1.Green * weight1 + color2.Green * weight2),
@@ -121,10 +124,10 @@ namespace Polished.Types
         /// <returns></returns>
         public RgbColor Opacify(double amount)
         {
-            var alpha = Alpha.HasValue ? Alpha.Value : 1;
+            double alpha = Alpha.HasValue ? Alpha.Value : 1;
             return new RgbColor
             {
-                Alpha = Helpers.Guard(0, 1, (alpha * 100 + amount * 100) / 100),
+                Alpha = InternalHelpers.Guard(0, 1, (alpha * 100 + amount * 100) / 100),
                 Red = Red,
                 Green = Green,
                 Blue = Blue
@@ -138,17 +141,17 @@ namespace Polished.Types
         /// <returns></returns>
         public static RgbColor Parse(string color)
         {
-            var hexRegex = "^#[a-fA-F0-9]{6}$";
-            var hexRgbaRegex = "^#[a-fA-F0-9]{8}$";
-            var reducedHexRegex = "^#[a-fA-F0-9]{3}$";
-            var reducedRgbaHexRegex = "^#[a-fA-F0-9]{4}$";
-            var rgbRegex = @"rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$";
-            var rgbaRegex = @"^rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*([-+]?[0-9]*[.]?[0-9]+)\s*\)$";
-            var hslRegex = @"^hsl\(\s*(\d{0,3}[.]?[0-9]+)\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$";
-            var hslaRegex = @"^hsla\(\s*(\d{0,3}[.]?[0-9]+)\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*,\s*([-+]?[0-9]*[.]?[0-9]+)\s*\)$";
+            string hexRegex = "^#[a-fA-F0-9]{6}$";
+            string hexRgbaRegex = "^#[a-fA-F0-9]{8}$";
+            string reducedHexRegex = "^#[a-fA-F0-9]{3}$";
+            string reducedRgbaHexRegex = "^#[a-fA-F0-9]{4}$";
+            string rgbRegex = @"rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$";
+            string rgbaRegex = @"^rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*([-+]?[0-9]*[.]?[0-9]+)\s*\)$";
+            string hslRegex = @"^hsl\(\s*(\d{0,3}[.]?[0-9]+)\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$";
+            string hslaRegex = @"^hsla\(\s*(\d{0,3}[.]?[0-9]+)\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*,\s*([-+]?[0-9]*[.]?[0-9]+)\s*\)$";
 
-            var conversion = new Conversion();
-            var normalizedColor = conversion.NameToHex(color);
+            Conversion conversion = new Conversion();
+            string normalizedColor = conversion.NameToHex(color);
 
             if (Regex.IsMatch(normalizedColor, hexRegex))
             {
@@ -161,7 +164,7 @@ namespace Polished.Types
             }
             if (Regex.IsMatch(normalizedColor, hexRgbaRegex))
             {
-                var alpha = Math.Round(
+                double alpha = Math.Round(
                     ((double)int.Parse($"{normalizedColor[7]}{normalizedColor[8]}", System.Globalization.NumberStyles.HexNumber) / 255)
                 , 2);
                 return new RgbColor
@@ -183,7 +186,7 @@ namespace Polished.Types
             }
             if (Regex.IsMatch(normalizedColor, reducedRgbaHexRegex))
             {
-                var alpha = Math.Round(
+                double alpha = Math.Round(
                     ((double)int.Parse($"{normalizedColor[4]}{normalizedColor[4]}", System.Globalization.NumberStyles.HexNumber) / 255)
                 , 2);
                 return new RgbColor
@@ -194,7 +197,7 @@ namespace Polished.Types
                     Alpha = alpha
                 };
             }
-            var rgbMatched = new Regex(rgbRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
+            MatchCollection rgbMatched = new Regex(rgbRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
             if (rgbMatched.Count > 0)
             {
                 return new RgbColor
@@ -204,7 +207,7 @@ namespace Polished.Types
                     Blue = int.Parse(rgbMatched[0].Groups[3].Value)
                 };
             }
-            var rgbaMatched = new Regex(rgbaRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
+            MatchCollection rgbaMatched = new Regex(rgbaRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
             if (rgbaMatched.Count > 0)
             {
                 return new RgbColor
@@ -215,23 +218,23 @@ namespace Polished.Types
                     Alpha = double.Parse(rgbaMatched[0].Groups[4].Value)
                 };
             }
-            var hslMatched = new Regex(hslRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
+            MatchCollection hslMatched = new Regex(hslRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
             if (hslMatched.Count > 0)
             {
-                var hue = double.Parse(hslMatched[0].Groups[1].Value);
-                var saturation = double.Parse(hslMatched[0].Groups[2].Value) / 100;
-                var lightness = double.Parse(hslMatched[0].Groups[3].Value) / 100;
-                var hsl = new HslColor { Hue = hue, Saturation = saturation, Lightness = lightness };
+                double hue = double.Parse(hslMatched[0].Groups[1].Value);
+                double saturation = double.Parse(hslMatched[0].Groups[2].Value) / 100;
+                double lightness = double.Parse(hslMatched[0].Groups[3].Value) / 100;
+                HslColor hsl = new HslColor { Hue = hue, Saturation = saturation, Lightness = lightness };
                 return hsl.ToRgb();
             }
-            var hslaMatched = new Regex(hslaRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
+            MatchCollection hslaMatched = new Regex(hslaRegex, RegexOptions.IgnoreCase).Matches(normalizedColor);
             if (hslaMatched.Count > 0)
             {
-                var hue = double.Parse(hslaMatched[0].Groups[1].Value);
-                var saturation = double.Parse(hslaMatched[0].Groups[2].Value) / 100;
-                var lightness = double.Parse(hslaMatched[0].Groups[3].Value) / 100;
-                var hsl = new HslColor { Hue = hue, Saturation = saturation, Lightness = lightness };
-                var rgba = hsl.ToRgb();
+                double hue = double.Parse(hslaMatched[0].Groups[1].Value);
+                double saturation = double.Parse(hslaMatched[0].Groups[2].Value) / 100;
+                double lightness = double.Parse(hslaMatched[0].Groups[3].Value) / 100;
+                HslColor hsl = new HslColor { Hue = hue, Saturation = saturation, Lightness = lightness };
+                RgbColor rgba = hsl.ToRgb();
                 rgba.Alpha = double.Parse(hslaMatched[0].Groups[4].Value);
                 return rgba;
             }
@@ -245,7 +248,10 @@ namespace Polished.Types
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public RgbColor Shade(double percentage) => new RgbColor { Blue = 0, Green = 0, Red = 0 }.Mix(this, percentage);
+        public RgbColor Shade(double percentage)
+        {
+            return new RgbColor { Blue = 0, Green = 0, Red = 0 }.Mix(this, percentage);
+        }
 
         /// <summary>
         /// Tints a color by mixing it with white. `tint` can produce
@@ -254,7 +260,10 @@ namespace Polished.Types
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public RgbColor Tint(double percentage) => new RgbColor { Blue = 255, Green = 255, Red = 255 }.Mix(this, percentage);
+        public RgbColor Tint(double percentage)
+        {
+            return new RgbColor { Blue = 255, Green = 255, Red = 255 }.Mix(this, percentage);
+        }
 
         /// <summary>
         /// Converts the RgbColor object to an HslColor object.
@@ -262,9 +271,9 @@ namespace Polished.Types
         /// <returns></returns>
         public HslColor ToHsl()
         {
-            double red = (double)(Red / 255d);
-            double green = (double)(Green / 255d);
-            double blue = (double)(Blue / 255d);
+            double red = Red / 255d;
+            double green = Green / 255d;
+            double blue = Blue / 255d;
 
             double max = (new double[] { red, green, blue }).Max();
             double min = (new double[] { red, green, blue }).Min();
@@ -285,20 +294,20 @@ namespace Polished.Types
 
             double hue;
             double delta = max - min;
-            double saturation = lightness > 0.5 ? ((double)delta / (2 - max - min)) : ((double)delta / (max + min));
+            double saturation = lightness > 0.5 ? (delta / (2 - max - min)) : (delta / (max + min));
 
             if (max == red)
             {
-                hue = ((double)(green - blue) / delta + (green < blue ? 6 : 0));
+                hue = ((green - blue) / delta + (green < blue ? 6 : 0));
             }
             else if (max == green)
             {
-                hue = ((double)(blue - red) / delta + 2);
+                hue = ((blue - red) / delta + 2);
             }
             else
             {
                 // blue case
-                hue = ((double)(red - green) / delta + 4);
+                hue = ((red - green) / delta + 4);
             }
 
             hue *= 60;
@@ -337,10 +346,10 @@ namespace Polished.Types
         /// <returns></returns>
         public RgbColor Transparentize(double amount)
         {
-            var alpha = Alpha.HasValue ? Alpha.Value : 1;
+            double alpha = Alpha.HasValue ? Alpha.Value : 1;
             return new RgbColor
             {
-                Alpha = Helpers.Guard(0, 1, (alpha * 100 - amount * 100) / 100),
+                Alpha = InternalHelpers.Guard(0, 1, (alpha * 100 - amount * 100) / 100),
                 Red = Red,
                 Green = Green,
                 Blue = Blue
@@ -369,8 +378,8 @@ namespace Polished.Types
 
         private double GetModifier(int color)
         {
-            var channel = color / 255.0;
-            var modifer = channel <= 0.03928
+            double channel = color / 255.0;
+            double modifer = channel <= 0.03928
                 ? channel / 12.92
                 : Math.Pow(((channel + 0.055) / 1.055), 2.4);
             return modifer;

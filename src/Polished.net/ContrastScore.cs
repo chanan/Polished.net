@@ -1,4 +1,4 @@
-﻿namespace Polished.Types
+﻿namespace Polished
 {
     public class ContrastScore
     {

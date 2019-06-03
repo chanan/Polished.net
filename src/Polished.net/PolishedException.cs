@@ -5,7 +5,7 @@ namespace Polished
 {
     public class PolishedException : Exception
     {
-        private readonly static Dictionary<int, string> _errors;
+        private static readonly Dictionary<int, string> _errors;
 
         static PolishedException()
         {

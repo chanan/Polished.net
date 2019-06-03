@@ -1,12 +1,11 @@
-﻿using Polished.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Polished.Internal
 {
     internal class Conversion
     {
-        private Dictionary<string, string> _namedColorMap = new Dictionary<string, string>() {
+        private readonly Dictionary<string, string> _namedColorMap = new Dictionary<string, string>() {
           {"aliceblue", "f0f8ff"},
           {"antiquewhite", "faebd7"},
           {"aqua", "00ffff"},
@@ -166,7 +165,7 @@ namespace Polished.Internal
             }
 
             // formulae from https://en.wikipedia.org/wiki/HSL_and_HSV
-            double huePrime = (double)(((hslColor.Hue % 360) + 360) % 360) / 60;
+            double huePrime = ((hslColor.Hue % 360) + 360) % 360 / 60;
             double chroma = (1 - Math.Abs(2 * hslColor.Lightness - 1)) * hslColor.Saturation;
             double secondComponent = chroma * (1 - Math.Abs((huePrime % 2) - 1));
 
@@ -257,7 +256,7 @@ namespace Polished.Internal
 
         internal string NameToHex(string color)
         {
-            var key = color.ToLower();
+            string key = color.ToLower();
             return _namedColorMap.ContainsKey(key) ?
                 $"#{_namedColorMap[key]}" :
                 color;

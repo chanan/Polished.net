@@ -1,8 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Polished</RootNamespace>
+
+    <PackageId>Polished</PackageId>
+    <Version>1.0.0-preview-01</Version>
+    <Authors>Chanan Braunstein</Authors>
+    <Title>Polished.net</Title>
+    <Description>A lightweight toolset for writing styles in C#</Description>
+    <PackageTags>css;csharp;styling</PackageTags>
+    <RepositoryUrl>https://github.com/chanan/Polished.net</RepositoryUrl>
   </PropertyGroup>
 
 </Project>

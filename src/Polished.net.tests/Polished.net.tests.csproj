@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Polished.tests</RootNamespace>
+    <RootNamespace>Polished.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
