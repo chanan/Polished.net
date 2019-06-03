@@ -15,5 +15,14 @@
         string BorderStyle(params string[] args);
         string BorderWidth(params string[] args);
         string Buttons(params InteractionState[] states);
+        string Margin(params string[] args);
+        string Padding(params string[] args);
+        string Position(Position position, params string[] args);
+        string Position(params string[] args);
+        string Size(string height, string width);
+        string Size(string height);
+        string TextInputs(params InteractionState[] states);
+        string Transitions(params string[] args);
+        string Transitions(System.Collections.Generic.List<string> properties, string transation);
     }
 }

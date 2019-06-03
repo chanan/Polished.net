@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Polished
 {
@@ -185,6 +186,107 @@ namespace Polished
             return _internalHelpers.StatefulSelectors(list, ButtonTemplate, stateMap);
         }
 
+        /// <summary>
+        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public string Margin(params string[] args)
+        {
+            return _helpers.DirectionalProperty("margin", args);
+        }
+
+        /// <summary>
+        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public string Padding(params string[] args)
+        {
+            return _helpers.DirectionalProperty("padding", args);
+        }
+
+        /// <summary>
+        /// Shorthand accepts up to five values, including null to skip a value, and maps them to their respective directions. 
+        /// The first value is a position keyword.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public string Position(Position position, params string[] args)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("position:").Append(position.ToString().ToLower()).Append(';');
+            sb.Append(_helpers.DirectionalProperty(null, args));
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Shorthand accepts up to four values, including null to skip a value, and maps them to their respective directions. 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public string Position(params string[] args)
+        {
+            return _helpers.DirectionalProperty(null, args);
+        }
+
+        /// <summary>
+        /// Shorthand to set the height and width properties in a single statement.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
+        public string Size(string height, string width)
+        {
+            string widthVal = width != null ? width : height;
+            return $"height:{height};width:{widthVal};";
+        }
+
+        /// <summary>
+        /// Shorthand to set the height and width properties in a single statement.
+        /// Height is used for the width as well.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public string Size(string height)
+        {
+            return Size(height, height);
+        }
+
+        /// <summary>
+        /// Populates selectors that target all text inputs. You can pass optional states to append to the selectors.
+        /// </summary>
+        /// <param name="states"></param>
+        /// <returns></returns>
+        public string TextInputs(params InteractionState[] states)
+        {
+            List<string> list = EnumListToStringList(states.Select(state => state.ToString()).ToList());
+            List<string> stateMap = EnumListToStringList(Enum.GetNames(typeof(InteractionState)).ToList());
+            return _internalHelpers.StatefulSelectors(list, TextInputsTemplate, stateMap);
+        }
+
+        /// <summary>
+        /// Accepts any number of transition values as parameters for creating a single transition statement. 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public string Transitions(params string[] args)
+        {
+            return "transition: " + string.Join(", ", args) + ";";
+        }
+
+        /// <summary>
+        /// Accepts an array of properties as the first parameter that you would like to apply the same transition values to (second parameter).
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public string Transitions(List<string> properties, string transation)
+        {
+            List<string> ret = properties.Select(prop => $"{prop} {transation}").ToList();
+            return "transition: " + string.Join(", ", ret) + ";";
+        }
+
         private List<string> EnumListToStringList(List<string> input)
         {
             List<string> ret = new List<string>();
@@ -208,6 +310,26 @@ namespace Polished
                 input[type=""button""]{state},
                 input[type=""reset""]{state},
                 input[type=""submit""]{state}";
+        }
+
+        private string TextInputsTemplate(string state)
+        {
+            return $@"input[type=""color""]{state},
+            input[type=""date""]{state},
+            input[type=""datetime""]{state},
+            input[type=""datetime-local""]{state},
+            input[type=""email""]{state},
+            input[type=""month""]{ state},
+            input[type=""number""]{state},
+            input[type=""password""]{state},
+            input[type=""search""]${ state},
+            input[type=""tel""]{state},
+            input[type=""text""]{state},
+            input[type=""time""]{state},
+            input[type=""url""]{state},
+            input[type=""week""]{state},
+            input:not([type]){state},
+            textarea{state}";
         }
     }
 }
