@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Polished
 {
@@ -89,6 +90,17 @@ namespace Polished
         public static PolishedException GetPolishedException(int errorNum)
         {
             return new PolishedException(_errors[errorNum]);
+        }
+
+        public static PolishedException GetPolishedException(int errorNum, params string[] args)
+        {
+            string err = _errors[errorNum];
+            Regex regex = new Regex("%s");
+            foreach (string arg in args)
+            {
+                err = regex.Replace(err, arg, 1);
+            }
+            return new PolishedException(err);
         }
 
         public PolishedException(string message) : base(message)
