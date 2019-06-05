@@ -11,12 +11,7 @@ namespace Polished
         private readonly IHelpers _helpers = new Helpers();
         private readonly InternalHelpers _internalHelpers = new InternalHelpers();
 
-        /// <summary>
-        /// Shorthand for easily setting the animation property. Allows either multiple arrays with animations
-        /// or a single animation spread over the arguments.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Animation(params string[] args)
         {
             if (args.Count() > 8)
@@ -27,12 +22,7 @@ namespace Polished
             return "animation: " + string.Join(", ", args) + ";";
         }
 
-        /// <summary>
-        /// Shorthand for easily setting the animation property. Allows either multiple arrays with animations
-        /// or a single animation spread over the arguments.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Animation(params string[][] args)
         {
             if (args.Max(arg => arg.Count()) > 8)
@@ -44,46 +34,26 @@ namespace Polished
             return "animation: " + string.Join(", ", ret) + ";";
         }
 
-        /// <summary>
-        /// Shorthand that accepts any number of backgroundImage values as parameters for creating a single background statement.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string BackgroundImages(params string[] args)
         {
             return "background-image: " + string.Join(", ", args) + ";";
         }
 
-        /// <summary>
-        /// Shorthand that accepts any number of background values as parameters for creating a single background statement.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Backgrounds(params string[] args)
         {
             return "background: " + string.Join(", ", args) + ";";
         }
 
-        /// <summary>
-        /// Shorthand for the border property that splits out individual properties for use with tools like Fela and Styletron. 
-        /// A side keyword can optionally be passed to target only one side's border properties.
-        /// </summary>
-        /// <param name="borderSide"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Border(Side borderSide, params string[] args)
         {
             string side = borderSide.ToString().ToLower();
             return $"border-{side}-width:{args[0]};border-{side}-style:{args[1]};border-{side}-color:{args[2]};";
         }
 
-        /// <summary>
-        /// Shorthand for the border property that splits out individual properties for use with tools like Fela and Styletron. 
-        /// A side keyword can optionally be passed to target only one side's border properties.
-        /// </summary>
-        /// <param name="param"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Border(string param, params string[] args)
         {
             string[] names = Enum.GetNames(typeof(Side));
@@ -97,12 +67,7 @@ namespace Polished
             return Border(list.ToArray());
         }
 
-        /// <summary>
-        /// Shorthand for the border property that splits out individual properties for use with tools like Fela and Styletron. 
-        /// The first param can optionally be passed to target only one side's border properties.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Border(params string[] args)
         {
             string[] names = Enum.GetNames(typeof(Side));
@@ -114,22 +79,13 @@ namespace Polished
             return $"border-width:{args[0]};border-style:{args[1]};border-color:{args[2]};";
         }
 
-        /// <summary>
-        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string BorderColor(params string[] args)
         {
             return _helpers.DirectionalProperty("border-color", args);
         }
 
-        /// <summary>
-        /// Shorthand that accepts a value for side and a value for radius and applies the radius value to both corners of the side.
-        /// </summary>
-        /// <param name="side"></param>
-        /// <param name="radius"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string BorderRadius(Side side, string radius)
         {
             string strSide = side.ToString().ToLower();
@@ -143,42 +99,26 @@ namespace Polished
             }
         }
 
-        /// <summary>
-        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string BorderRadius(string side, string radius)
         {
             Side SideEnum = (Side)Enum.Parse(typeof(Side), side.FirstCharToUpper());
             return BorderRadius(SideEnum, radius);
         }
 
-        /// <summary>
-        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string BorderStyle(params string[] args)
         {
             return _helpers.DirectionalProperty("border-style", args);
         }
 
-        /// <summary>
-        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string BorderWidth(params string[] args)
         {
             return _helpers.DirectionalProperty("border-width", args);
         }
 
-        /// <summary>
-        /// Populates selectors that target all buttons. You can pass optional states to append to the selectors.
-        /// </summary>
-        /// <param name="states"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Buttons(params InteractionState[] states)
         {
             List<string> list = EnumListToStringList(states.Select(state => state.ToString()).ToList());
@@ -186,33 +126,19 @@ namespace Polished
             return _internalHelpers.StatefulSelectors(list, ButtonTemplate, stateMap);
         }
 
-        /// <summary>
-        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Margin(params string[] args)
         {
             return _helpers.DirectionalProperty("margin", args);
         }
 
-        /// <summary>
-        /// Shorthand that accepts up to four values, including null to skip a value, and maps them to their respective directions.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Padding(params string[] args)
         {
             return _helpers.DirectionalProperty("padding", args);
         }
 
-        /// <summary>
-        /// Shorthand accepts up to five values, including null to skip a value, and maps them to their respective directions. 
-        /// The first value is a position keyword.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Position(Position position, params string[] args)
         {
             StringBuilder sb = new StringBuilder();
@@ -221,44 +147,26 @@ namespace Polished
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Shorthand accepts up to four values, including null to skip a value, and maps them to their respective directions. 
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Position(params string[] args)
         {
             return _helpers.DirectionalProperty(null, args);
         }
 
-        /// <summary>
-        /// Shorthand to set the height and width properties in a single statement.
-        /// </summary>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Size(string height, string width)
         {
             string widthVal = width != null ? width : height;
             return $"height:{height};width:{widthVal};";
         }
 
-        /// <summary>
-        /// Shorthand to set the height and width properties in a single statement.
-        /// Height is used for the width as well.
-        /// </summary>
-        /// <param name="height"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Size(string height)
         {
             return Size(height, height);
         }
 
-        /// <summary>
-        /// Populates selectors that target all text inputs. You can pass optional states to append to the selectors.
-        /// </summary>
-        /// <param name="states"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string TextInputs(params InteractionState[] states)
         {
             List<string> list = EnumListToStringList(states.Select(state => state.ToString()).ToList());
@@ -266,21 +174,13 @@ namespace Polished
             return _internalHelpers.StatefulSelectors(list, TextInputsTemplate, stateMap);
         }
 
-        /// <summary>
-        /// Accepts any number of transition values as parameters for creating a single transition statement. 
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Transitions(params string[] args)
         {
             return "transition: " + string.Join(", ", args) + ";";
         }
 
-        /// <summary>
-        /// Accepts an array of properties as the first parameter that you would like to apply the same transition values to (second parameter).
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Transitions(List<string> properties, string transation)
         {
             List<string> ret = properties.Select(prop => $"{prop} {transation}").ToList();

@@ -20,15 +20,7 @@ namespace Polished
             { "svgz", "svg" },
         };
 
-        /// <summary>
-        /// Returns a CSS calc formula for linear interpolation of a property between two values.
-        /// Accepts optional minScreen (defaults to '320px') and maxScreen (defaults to '1200px').
-        /// </summary>
-        /// <param name="fromSize"></param>
-        /// <param name="toSize"></param>
-        /// <param name="minScreen"></param>
-        /// <param name="maxScreen"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Between(string fromSize, string toSize, string minScreen = "320px", string maxScreen = "1200px")
         {
             ValueAndUnit fromSizeValueAndUnit = _helpers.GetValueAndUnit(fromSize);
@@ -59,45 +51,26 @@ namespace Polished
             return $"calc({Math.Round(baseNum, 2)}{fromSizeValueAndUnit.Unit} + {Math.Round(100 * slope, 2)}vw)";
         }
 
-        /// <summary>
-        /// CSS to contain a float (credit to CSSMojo).
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string ClearFix(string parent = "&")
         {
             string pseudoSelector = $"{parent}:after";
             return $"{pseudoSelector}{{clear:both;content:\"\";display:table;}}";
         }
 
-        /// <summary>
-        /// CSS to fully cover an area. Can optionally be passed an offset to act as a "padding".
-        /// </summary>
-        /// <param name="offset"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Cover(string offset = "0")
         {
             return $"position:absolute;top:{offset};right:{offset};bottom:{offset};left:{offset};";
         }
 
-        /// <summary>
-        /// CSS to represent truncated text with an ellipsis.
-        /// </summary>
-        /// <param name="width"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string Ellipsis(string width = "100%")
         {
             return $"display:inline-block;max-width:{width};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;";
         }
 
-        /// <summary>
-        /// Returns a set of media queries that resizes a property (or set of properties) between a provided fromSize and toSize.
-        /// Accepts optional minScreen (defaults to '320px') and maxScreen (defaults to '1200px') to constrain the interpolation.
-        /// </summary>
-        /// <param name="cssProp"></param>
-        /// <param name="minScreen"></param>
-        /// <param name="maxScreen"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string FluidRange(FluidRangeConfiguration cssProp, string minScreen = "320px", string maxScreen = "1200px")
         {
             if (cssProp == null)
@@ -113,14 +86,7 @@ namespace Polished
             return $"{cssProp.Prop}:{cssProp.FromSize};@media(min-width:{minScreen}){{{cssProp.Prop}:{between};}}@media(min-width:{maxScreen}){{{cssProp.Prop}:{cssProp.ToSize};}}";
         }
 
-        /// <summary>
-        /// Returns a set of media queries that resizes a property (or set of properties) between a provided fromSize and toSize.
-        /// Accepts optional minScreen (defaults to '320px') and maxScreen (defaults to '1200px') to constrain the interpolation.
-        /// </summary>
-        /// <param name="cssProps"></param>
-        /// <param name="minScreen"></param>
-        /// <param name="maxScreen"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string FluidRange(List<FluidRangeConfiguration> cssProps, string minScreen = "320px", string maxScreen = "1200px")
         {
             StringBuilder fallbacks = new StringBuilder();
@@ -154,11 +120,7 @@ namespace Polished
             return fallbacks.ToString() + minSb.ToString() + maxSb.ToString();
         }
 
-        /// <summary>
-        /// CSS for a @font-face declaration.
-        /// </summary>
-        /// <param name="fontFaceConfiguration"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string FontFace(FontFaceConfiguration fontFaceConfiguration)
         {
             return FontFace(fontFaceConfiguration.FontFamily, fontFaceConfiguration.FontFilePath, fontFaceConfiguration.FontStretch,
@@ -168,23 +130,8 @@ namespace Polished
                 fontFaceConfiguration.FontFeatureSettings);
         }
 
-        /// <summary>
-        /// CSS for a @font-face declaration.
-        /// </summary>
-        /// <param name="fontFamily"></param>
-        /// <param name="fontFilePath"></param>
-        /// <param name="fontStretch"></param>
-        /// <param name="fontStyle"></param>
-        /// <param name="fontVariant"></param>
-        /// <param name="fontWeight"></param>
-        /// <param name="fileFormats"></param>
-        /// <param name="formatHint"></param>
-        /// <param name="localFonts"></param>
-        /// <param name="unicodeRange"></param>
-        /// <param name="fontDisplay"></param>
-        /// <param name="fontVariationSettings"></param>
-        /// <param name="fontFeatureSettings"></param>
-        /// <returns></returns>
+
+        /// <inheritdoc />
         public string FontFace(string fontFamily, string fontFilePath, string fontStretch, string fontStyle, string fontVariant, string fontWeight,
             List<string> fileFormats, bool formatHint, List<string> localFonts, string unicodeRange, string fontDisplay, string fontVariationSettings,
             string fontFeatureSettings)
@@ -262,52 +209,31 @@ namespace Polished
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Generates a media query to target HiDPI devices.
-        /// </summary>
-        /// <param name="ratio"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string HiDPI(double ratio = 1.3)
         {
             return $"@media only screen and (-webkit-min-device-pixel-ratio: {ratio}),only screen and (min--moz-device-pixel-ratio: {ratio}),only screen and (-o-min-device-pixel-ratio: {ratio}/1),only screen and (min-resolution: {Math.Round(ratio * 96)}dpi),only screen and (min-resolution: {ratio}dppx)";
         }
 
-        /// <summary>
-        /// CSS to hide text to show a background image in a SEO-friendly way.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string HideText()
         {
             return "text-indent:101%;overflow:hidden;white-space:nowrap;";
         }
 
-        /// <summary>
-        /// CSS to hide content visually but remain accessible to screen readers.
-        /// from[HTML5 Boilerplate] (https://github.com/h5bp/html5-boilerplate/blob/9a176f57af1cfe8ec70300da4621fb9b07e5fa31/src/css/main.css#L121)
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string HideVisually()
         {
             return "border:0,clip:rect(0 0 0 0),clip-path:inset(50%),height:1px,margin:-1px,overflow:hidden,padding:0,position:absolute,white-space:nowrap,width:1px;";
         }
 
-        /// <summary>
-        /// CSS for declaring a linear gradient, including a fallback background-color. 
-        /// The fallback is either the first color-stop or an explicitly passed fallback color.
-        /// </summary>
-        /// <param name="linearGradientConfiguration"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string LinearGradient(LinearGradientConfiguration linearGradientConfiguration)
         {
             return LinearGradient(linearGradientConfiguration.ColorStops, linearGradientConfiguration.Fallback, linearGradientConfiguration.ToDirection);
         }
 
-        /// <summary>
-        /// CSS for declaring a linear gradient, including a fallback background-color. 
-        /// The fallback is either the first color-stop or an explicitly passed fallback color.
-        /// </summary>
-        /// <param name="linearGradientConfiguration"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public string LinearGradient(List<string> colorStops, string fallback, string toDirection)
         {
             if (colorStops == null || colorStops.Count < 2)
@@ -320,7 +246,11 @@ namespace Polished
             StringBuilder sb = new StringBuilder();
             sb.Append("background-color:").Append(fallback ?? colorStops[0].Split(' ')[0]).Append(";");
             sb.Append("background-image:").Append("linear-gradient(");
-            if (!string.IsNullOrWhiteSpace(toDirection)) sb.Append(toDirection).Append(", ");
+            if (!string.IsNullOrWhiteSpace(toDirection))
+            {
+                sb.Append(toDirection).Append(", ");
+            }
+
             sb.Append(string.Join(", ", colorStops));
             sb.Append(");");
             return sb.ToString();
