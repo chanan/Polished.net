@@ -13,5 +13,7 @@
         string HideText();
         string HideVisually();
         string HiDPI(double ratio = 1.3);
+        string LinearGradient(LinearGradientConfiguration linearGradientConfiguration);
+        string LinearGradient(System.Collections.Generic.List<string> colorStops, string fallback, string toDirection = "");
     }
 }

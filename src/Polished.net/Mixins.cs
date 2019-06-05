@@ -291,6 +291,41 @@ namespace Polished
             return "border:0,clip:rect(0 0 0 0),clip-path:inset(50%),height:1px,margin:-1px,overflow:hidden,padding:0,position:absolute,white-space:nowrap,width:1px;";
         }
 
+        /// <summary>
+        /// CSS for declaring a linear gradient, including a fallback background-color. 
+        /// The fallback is either the first color-stop or an explicitly passed fallback color.
+        /// </summary>
+        /// <param name="linearGradientConfiguration"></param>
+        /// <returns></returns>
+        public string LinearGradient(LinearGradientConfiguration linearGradientConfiguration)
+        {
+            return LinearGradient(linearGradientConfiguration.ColorStops, linearGradientConfiguration.Fallback, linearGradientConfiguration.ToDirection);
+        }
+
+        /// <summary>
+        /// CSS for declaring a linear gradient, including a fallback background-color. 
+        /// The fallback is either the first color-stop or an explicitly passed fallback color.
+        /// </summary>
+        /// <param name="linearGradientConfiguration"></param>
+        /// <returns></returns>
+        public string LinearGradient(List<string> colorStops, string fallback, string toDirection)
+        {
+            if (colorStops == null || colorStops.Count < 2)
+            {
+                throw PolishedException.GetPolishedException(56);
+            }
+
+            //TODO: Not sure how constructGradientValue https://github.com/styled-components/polished/blob/master/src/internalHelpers/_constructGradientValue.js
+            //fits in here.
+            StringBuilder sb = new StringBuilder();
+            sb.Append("background-color:").Append(fallback ?? colorStops[0].Split(' ')[0]).Append(";");
+            sb.Append("background-image:").Append("linear-gradient(");
+            if (!string.IsNullOrWhiteSpace(toDirection)) sb.Append(toDirection).Append(", ");
+            sb.Append(string.Join(", ", colorStops));
+            sb.Append(");");
+            return sb.ToString();
+        }
+
         private string GenerateSources(string fontFilePath, List<string> localFonts, List<string> fileFormats, bool formatHint)
         {
             List<string> fontReferences = new List<string>();
