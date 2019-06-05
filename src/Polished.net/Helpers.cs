@@ -83,6 +83,20 @@ namespace Polished
         }
 
         /// <summary>
+        /// Returns the value and unit for a css value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ValueAndUnit GetValueAndUnit(string value)
+        {
+            return new ValueAndUnit
+            {
+                Value = StripUnit(value),
+                Unit = GetUnit(value)
+            };
+        }
+
+        /// <summary>
         /// Returns the unit of a css value
         /// </summary>
         /// <param name="value"></param>
