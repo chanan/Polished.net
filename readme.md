@@ -9,3 +9,8 @@ Docs
 ====
 
 There are no docs yet for this version but the polished js docs maybe helpful: https://polished.js.org/
+
+Install
+-------
+
+[![NuGet Pre Release](https://img.shields.io/nuget/vpre/Polished.svg)](https://www.nuget.org/packages/Polished/)
