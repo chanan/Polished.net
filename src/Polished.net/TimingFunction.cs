@@ -1,0 +1,30 @@
+﻿namespace Polished
+{
+    public enum TimingFunction
+    {
+        EaseInBack,
+        EaseInCirc,
+        EaseInCubic,
+        EaseInExpo,
+        EaseInQuad,
+        EaseInQuart,
+        EaseInQuint,
+        EaseInSine,
+        EaseOutBack,
+        EaseOutCubic,
+        EaseOutCirc,
+        EaseOutExpo,
+        EaseOutQuad,
+        EaseOutQuart,
+        EaseOutQuint,
+        EaseOutSine,
+        EaseInOutBack,
+        EaseInOutCirc,
+        EaseInOutCubic,
+        EaseInOutExpo,
+        EaseInOutQuad,
+        EaseInOutQuart,
+        EaseInOutQuint,
+        EaseInOutSine
+    }
+}

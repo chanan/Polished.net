@@ -3,8 +3,12 @@
     public enum Side
     {
         Top,
+        TopRight,
         Right,
+        BottomRight,
         Bottom,
-        Left
+        BottomLeft,
+        Left,
+        TopLeft
     }
 }

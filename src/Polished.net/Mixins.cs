@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Polished.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,34 @@ namespace Polished
             { "eot", "embedded-opentype" },
             {"svg", "svg" },
             { "svgz", "svg" },
+        };
+
+        private readonly Dictionary<TimingFunction, string> _timingMap = new Dictionary<TimingFunction, string>
+        {
+            {TimingFunction.EaseInBack,"cubic-bezier(0.600, -0.280, 0.735, 0.045)"},
+            {TimingFunction.EaseInCirc,"cubic-bezier(0.600,  0.040, 0.980, 0.335)"},
+            {TimingFunction.EaseInCubic,"cubic-bezier(0.550,  0.055, 0.675, 0.190)"},
+            {TimingFunction.EaseInExpo,"cubic-bezier(0.950,  0.050, 0.795, 0.035)"},
+            {TimingFunction.EaseInQuad,"cubic-bezier(0.550,  0.085, 0.680, 0.530)"},
+            {TimingFunction.EaseInQuart,"cubic-bezier(0.895,  0.030, 0.685, 0.220)"},
+            {TimingFunction.EaseInQuint,"cubic-bezier(0.755,  0.050, 0.855, 0.060)"},
+            {TimingFunction.EaseInSine,"cubic-bezier(0.470,  0.000, 0.745, 0.715)"},
+            {TimingFunction.EaseOutBack,"cubic-bezier(0.175,  0.885, 0.320, 1.275)"},
+            {TimingFunction.EaseOutCubic,"cubic-bezier(0.215,  0.610, 0.355, 1.000)"},
+            {TimingFunction.EaseOutCirc,"cubic-bezier(0.075,  0.820, 0.165, 1.000)"},
+            {TimingFunction.EaseOutExpo,"cubic-bezier(0.190,  1.000, 0.220, 1.000)"},
+            {TimingFunction.EaseOutQuad,"cubic-bezier(0.250,  0.460, 0.450, 0.940)"},
+            {TimingFunction.EaseOutQuart,"cubic-bezier(0.165,  0.840, 0.440, 1.000)"},
+            {TimingFunction.EaseOutQuint,"cubic-bezier(0.230,  1.000, 0.320, 1.000)"},
+            {TimingFunction.EaseOutSine,"cubic-bezier(0.390,  0.575, 0.565, 1.000)"},
+            {TimingFunction.EaseInOutBack,"cubic-bezier(0.680, -0.550, 0.265, 1.550)"},
+            {TimingFunction.EaseInOutCirc,"cubic-bezier(0.785,  0.135, 0.150, 0.860)"},
+            {TimingFunction.EaseInOutCubic,"cubic-bezier(0.645,  0.045, 0.355, 1.000)"},
+            {TimingFunction.EaseInOutExpo,"cubic-bezier(1.000,  0.000, 0.000, 1.000)"},
+            {TimingFunction.EaseInOutQuad,"cubic-bezier(0.455,  0.030, 0.515, 0.955)"},
+            {TimingFunction.EaseInOutQuart,"cubic-bezier(0.770,  0.000, 0.175, 1.000)"},
+            {TimingFunction.EaseInOutQuint,"cubic-bezier(0.860,  0.000, 0.070, 1.000)"},
+            {TimingFunction.EaseInOutSine,"cubic-bezier(0.445,  0.050, 0.550, 0.950)"}
         };
 
         /// <inheritdoc />
@@ -241,8 +270,6 @@ namespace Polished
                 throw PolishedException.GetPolishedException(56);
             }
 
-            //TODO: Not sure how constructGradientValue https://github.com/styled-components/polished/blob/master/src/internalHelpers/_constructGradientValue.js
-            //fits in here.
             StringBuilder sb = new StringBuilder();
             sb.Append("background-color:").Append(fallback ?? colorStops[0].Split(' ')[0]).Append(";");
             sb.Append("background-image:").Append("linear-gradient(");
@@ -254,6 +281,347 @@ namespace Polished
             sb.Append(string.Join(", ", colorStops));
             sb.Append(");");
             return sb.ToString();
+        }
+
+        /// <inheritdoc />
+        public string Normalize()
+        {
+            return @"html {
+                line-height: 1.15;
+                    -webkit-text-size-adjust: 100%;
+                }
+
+                body {
+                  margin: 0;
+                }
+
+                main {
+                  display: block;
+                }
+
+                h1 {
+                  font-size: 2em;
+                  margin: 0.67em 0;
+                }
+
+                hr {
+                  box-sizing: content-box;
+                  height: 0;
+                  overflow: visible;
+                }
+
+                pre {
+                  font-family: monospace, monospace;
+                  font-size: 1em;
+                }
+
+                a {
+                  background-color: transparent;
+                }
+
+                abbr[title] {
+                  border-bottom: none;
+                  text-decoration: underline;
+                  text-decoration: underline dotted;
+                }
+
+                b,
+                strong {
+                  font-weight: bolder;
+                }
+
+                code,
+                kbd,
+                samp {
+                  font-family: monospace, monospace;
+                  font-size: 1em;
+                }
+
+                small {
+                  font-size: 80%;
+                }
+
+                sub,
+                sup {
+                  font-size: 75%;
+                  line-height: 0;
+                  position: relative;
+                  vertical-align: baseline;
+                }
+
+                sub {
+                  bottom: -0.25em;
+                }
+
+                sup {
+                  top: -0.5em;
+                }
+
+                img {
+                  border-style: none;
+                }
+
+                button,
+                input,
+                optgroup,
+                select,
+                textarea {
+                  font-family: inherit;
+                  font-size: 100%;
+                  line-height: 1.15;
+                  margin: 0;
+                }
+
+                button,
+                input {
+                  overflow: visible;
+                }
+
+                button,
+                select {
+                  text-transform: none;
+                }
+
+                button,
+                [type=""button""],
+                [type=""reset""],
+                [type=""submit""] {
+                  -webkit-appearance: button;
+                }
+
+                button::-moz-focus-inner,
+                [type=""button""]::-moz-focus-inner,
+                [type=""reset""]::-moz-focus-inner,
+                [type=""submit""]::-moz-focus-inner {
+                  border-style: none;
+                  padding: 0;
+                }
+
+                button:-moz-focusring,
+                [type=""button""]:-moz-focusring,
+                [type=""reset""]:-moz-focusring,
+                [type=""submit""]:-moz-focusring {
+                  outline: 1px dotted ButtonText;
+                }
+
+                fieldset {
+                  padding: 0.35em 0.75em 0.625em;
+                }
+
+                legend {
+                  box-sizing: border-box;
+                  color: inherit;
+                  display: table;
+                  max-width: 100%;
+                  padding: 0;
+                  white-space: normal;
+                }
+
+                progress {
+                  vertical-align: baseline;
+                }
+
+                textarea {
+                  overflow: auto;
+                }
+
+                [type=""checkbox""],
+                [type=""radio""] {
+                  box-sizing: border-box;
+                  padding: 0;
+                }
+
+                [type=""number""]::-webkit-inner-spin-button,
+                [type=""number""]::-webkit-outer-spin-button {
+                  height: auto;
+                }
+
+                [type=""search""] {
+                  -webkit-appearance: textfield;
+                  outline-offset: -2px;
+                }
+
+                [type=""search""]::-webkit-search-decoration {
+                  -webkit-appearance: none;
+                }
+
+                ::-webkit-file-upload-button {
+                  -webkit-appearance: button;
+                  font: inherit;
+                }
+
+                details {
+                  display: block;
+                }
+
+                summary {
+                  display: list-item;
+                }
+
+                template {
+                  display: none;
+                }
+
+                [hidden] {
+                  display: none;
+                }
+            ".StripWhitespace();
+        }
+
+        /// <inheritdoc />
+        public string RadialGradient(RadialGradientConfiguration radialGradientConfiguration)
+        {
+            return RadialGradient(radialGradientConfiguration.ColorStops, radialGradientConfiguration.Extent,
+                radialGradientConfiguration.Fallback, radialGradientConfiguration.Position, radialGradientConfiguration.Shape);
+        }
+
+        /// <inheritdoc />
+        public string RadialGradient(List<string> colorStops, string extent, string fallback, string position, string shape)
+        {
+            if (colorStops == null || colorStops.Count < 2)
+            {
+                throw PolishedException.GetPolishedException(57);
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("background-color:").Append(fallback ?? colorStops[0].Split(' ')[0]).Append(";");
+            sb.Append("background-image:").Append("radial-gradient(");
+            sb.Append(RadialGradientFirstValue(position, shape, extent));
+            sb.Append(string.Join(", ", colorStops));
+            sb.Append(");");
+            return sb.ToString();
+        }
+
+        /// <inheritdoc />
+        public string RetinaImage(string filename, string backgroundSize, string extension = "png", string retinaFilename = "", string retinaSuffix = "_2x")
+        {
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                throw PolishedException.GetPolishedException(58);
+            }
+
+            string ext = string.IsNullOrWhiteSpace(extension) ? "png" : extension.Replace(".", "");
+            string rFilename = !string.IsNullOrWhiteSpace(retinaFilename) ? $"{retinaFilename}.{ext}" : $"{filename}{retinaSuffix}.{ext}";
+            string rBackgroundSize = !string.IsNullOrWhiteSpace(backgroundSize) ? $"background-size:{backgroundSize};" : "";
+            return $"background-image:url({filename}.{ext});{HiDPI()}{{background-image:url({rFilename});{rBackgroundSize}}}";
+        }
+
+        /// <inheritdoc />
+        public string TimingFunctions(TimingFunction timingFunction)
+        {
+            return _timingMap[timingFunction];
+        }
+
+        /// <inheritdoc />
+        public string Triangle(TriangleConfiguration triangleConfiguration)
+        {
+            return Triangle(triangleConfiguration.PointingDirection, triangleConfiguration.Height, triangleConfiguration.Width,
+                triangleConfiguration.ForegroundColor, triangleConfiguration.BackgroundColor);
+        }
+
+        /// <inheritdoc />
+        public string Triangle(Side pointingDirection, string height, string width, string foregroundColor, string backgroundColor = "transparent")
+        {
+            ValueAndUnit heightAndUnit = _helpers.GetValueAndUnit(height);
+            ValueAndUnit widthAndUnit = _helpers.GetValueAndUnit(width);
+            if (!double.TryParse(heightAndUnit.Value, out double h) || !double.TryParse(widthAndUnit.Value, out double w))
+            {
+                throw PolishedException.GetPolishedException(60);
+            }
+            string backgourndColorDefault = !string.IsNullOrWhiteSpace(backgroundColor) ? backgroundColor : "transparent";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("width:0;");
+            sb.Append("height:0;");
+            sb.Append("border-color:").Append(GetBorderColor(pointingDirection, foregroundColor, backgourndColorDefault)).Append(";");
+            sb.Append("border-style:solid;");
+            sb.Append("border-width:").Append(GetBorderWidth(pointingDirection, heightAndUnit, widthAndUnit)).Append(";");
+            return sb.ToString();
+        }
+
+        /// <inheritdoc />
+        public string WordWrap(string wrap = "break-word")
+        {
+            string wrapDefault = !string.IsNullOrWhiteSpace(wrap) ? wrap : "break-word";
+            string wordBreak = wrapDefault == "break-word" ? "break-all" : wrapDefault;
+            return $"overflow-wrap:{wrapDefault};word-wrap:{wrapDefault};word-break:{wordBreak};";
+        }
+
+        private string GetBorderWidth(Side pointingDirection, ValueAndUnit heightAndUnit, ValueAndUnit widthAndUnit)
+        {
+            string fullWidth = $"{widthAndUnit.Value}{widthAndUnit.Unit}";
+            string halfWidth = $"{double.Parse(widthAndUnit.Value) / 2}{widthAndUnit.Unit}";
+            string fullHeight = $"{heightAndUnit.Value}{heightAndUnit.Unit}";
+            string halfHeight = $"{double.Parse(heightAndUnit.Value) / 2}{heightAndUnit.Unit}";
+
+            switch (pointingDirection)
+            {
+                case Side.Top:
+                    return $"0 {halfWidth} {fullHeight} {halfWidth}";
+                case Side.TopLeft:
+                    return $"{fullWidth} {fullHeight} 0 0";
+                case Side.Left:
+                    return $"{halfHeight} {fullWidth} {halfHeight} 0";
+                case Side.BottomLeft:
+                    return $"{fullWidth} 0 0 {fullHeight}";
+                case Side.Bottom:
+                    return $"{fullHeight} {halfWidth} 0 {halfWidth}";
+                case Side.BottomRight:
+                    return $"0 0 {fullWidth} {fullHeight}";
+                case Side.Right:
+                    return $"{halfHeight} 0 {halfHeight} {fullWidth}";
+                case Side.TopRight:
+                default:
+                    return $"0 {fullWidth} {fullHeight} 0";
+            }
+        }
+
+        private string GetBorderColor(Side pointingDirection, string foregroundColor, string backgroundColor)
+        {
+            switch (pointingDirection)
+            {
+                case Side.Top:
+                case Side.BottomRight:
+                    return $"{backgroundColor} {backgroundColor} {foregroundColor} {backgroundColor}";
+                case Side.Right:
+                case Side.BottomLeft:
+                    return $"{backgroundColor} {backgroundColor} {backgroundColor} {foregroundColor}";
+                case Side.Bottom:
+                case Side.TopLeft:
+                    return $"{foregroundColor} {backgroundColor} {backgroundColor} {backgroundColor}";
+                case Side.Left:
+                case Side.TopRight:
+                default:
+                    return $"{backgroundColor} {foregroundColor} {backgroundColor} {backgroundColor}";
+            }
+        }
+
+        private string RadialGradientFirstValue(string position, string shape, string extent)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(position))
+            {
+                sb.Append(position).Append(" ");
+            }
+
+            if (!string.IsNullOrWhiteSpace(shape))
+            {
+                sb.Append(shape).Append(" ");
+            }
+
+            if (!string.IsNullOrWhiteSpace(extent))
+            {
+                sb.Append(extent).Append(" ");
+            }
+
+            string ret = sb.ToString();
+            if (string.IsNullOrWhiteSpace(ret))
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return ret.Substring(0, ret.Length - 1) + ", ";
+            }
         }
 
         private string GenerateSources(string fontFilePath, List<string> localFonts, List<string> fileFormats, bool formatHint)

@@ -5,7 +5,7 @@
     <RootNamespace>Polished</RootNamespace>
 
     <PackageId>Polished</PackageId>
-    <Version>1.0.0-preview-01</Version>
+    <Version>1.0.0-preview-02</Version>
     <Authors>Chanan Braunstein</Authors>
     <Title>Polished.net</Title>
     <Description>A lightweight toolset for writing styles in C#</Description>

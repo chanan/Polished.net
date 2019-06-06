@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.28917.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polished.net", "src\Polished.net\Polished.net.csproj", "{837A1FFD-D7C5-4EF4-BCA4-91CCB228201B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polished.net.tests", "src\Polished.net.tests\Polished.net.tests.csproj", "{53BA05F1-DDC6-4C6D-BF43-125E2F2CAC01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polished.net.tests", "src\Polished.net.tests\Polished.net.tests.csproj", "{53BA05F1-DDC6-4C6D-BF43-125E2F2CAC01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7D0A702B-44A7-4929-AE59-78EBC74F7686}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -115,5 +115,65 @@
         /// <param name="linearGradientConfiguration"></param>
         /// <returns></returns>
         string LinearGradient(System.Collections.Generic.List<string> colorStops, string fallback, string toDirection = "");
+
+        /// <summary>
+        /// CSS to normalize abnormalities across browsers (normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css)
+        /// </summary>
+        /// <returns></returns>
+        string Normalize();
+
+        /// <summary>
+        /// CSS for declaring a radial gradient, including a fallback background-color. 
+        /// The fallback is either the first color-stop or an explicitly passed fallback color.
+        /// </summary>
+        /// <param name="radialGradientConfiguration"></param>
+        /// <returns></returns>
+        string RadialGradient(RadialGradientConfiguration radialGradientConfiguration);
+
+        /// <summary>
+        /// CSS for declaring a radial gradient, including a fallback background-color. 
+        /// The fallback is either the first color-stop or an explicitly passed fallback color.
+        /// </summary>
+        /// <param name="colorStops"></param>
+        /// <param name="extent"></param>
+        /// <param name="fallback"></param>
+        /// <param name="position"></param>
+        /// <param name="shape"></param>
+        /// <returns></returns>
+        string RadialGradient(System.Collections.Generic.List<string> colorStops, string extent, string fallback, string position, string shape);
+
+        /// <summary>
+        /// A helper to generate a retina background image and non-retina
+        /// background image.The retina background image will output to a HiDPI media query. The mixin uses
+        /// a _2x.png filename suffix by default.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="backgroundSize"></param>
+        /// <param name="extension"></param>
+        /// <param name="retinaFilename"></param>
+        /// <param name="retinaSuffix"></param>
+        /// <returns></returns>
+        string RetinaImage(string filename, string backgroundSize, string extension = "png", string retinaFilename = "", string retinaSuffix = "_2x");
+
+        /// <summary>
+        /// String to represent common easing functions as demonstrated here: (github.com/jaukia/easie).
+        /// </summary>
+        /// <param name="timingFunction"></param>
+        /// <returns></returns>
+        string TimingFunctions(TimingFunction timingFunction);
+
+        /// <summary>
+        /// CSS to represent triangle with any pointing direction with an optional background color.
+        /// </summary>
+        /// <param name="triangleConfiguration"></param>
+        /// <returns></returns>
+        string Triangle(TriangleConfiguration triangleConfiguration);
+
+        /// <summary>
+        /// Provides an easy way to change the `wordWrap` property.
+        /// </summary>
+        /// <param name="wrap"></param>
+        /// <returns></returns>
+        string WordWrap(string wrap = "break-word");
     }
 }

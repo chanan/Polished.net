@@ -31,5 +31,22 @@ namespace Polished.Tests.Mixins
             string expected = "background-color:#FFF;background-image:linear-gradient(to top right, #00FFFF 0%, rgba(0, 0, 255, 0) 50%, #0000FF 95%);";
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void ThrowsIfColorStopsAreNull()
+        {
+            Assert.ThrowsException<PolishedException>(
+                () => _mixins.LinearGradient(null, "#FFF")
+            );
+
+        }
+
+        [TestMethod]
+        public void ThrowsIfColorStopsAreLessThan2()
+        {
+            Assert.ThrowsException<PolishedException>(
+                () => _mixins.LinearGradient(new List<string> { "#fff" }, "#fff")
+            );
+        }
     }
 }
