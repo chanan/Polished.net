@@ -10,6 +10,8 @@ Docs
 
 There are no docs yet for this version but the polished js docs maybe helpful: https://polished.js.org/
 
+BlazorStyled has an example integration with Polished.net in the docs site: https://chanan.github.io/BlazorStyled/polished
+
 Install
 -------
 
